@@ -1,0 +1,9 @@
+# Development profile - hot reload, verbose logging
+%dev.quarkus:
+  log:
+    level: DEBUG
+    category:
+      "org.techsolution": DEBUG
+      "io.quarkus": INFO
+%dev.app:
+  env: dev

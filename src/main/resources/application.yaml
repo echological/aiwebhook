@@ -1,0 +1,26 @@
+# AI Webhook - Application Config
+# Development cepat: hot reload, live coding, dev UI
+
+quarkus:
+  http:
+    port: 8080
+  dev-ui:
+    always-include: true
+  log:
+    level: INFO
+    category:
+      "org.techsolution": DEBUG
+  smallrye-openapi:
+    path: /q/openapi
+    ui:
+      path: /q/swagger-ui
+  # MongoDB - Dev Services auto-start di dev mode (Docker required)
+  # Production: set connection-string di application-prod.yaml
+  mongodb:
+    database: aiwebhook
+
+# App config
+app:
+  name: AI Webhook
+  version: 1.0.0
+  env: dev

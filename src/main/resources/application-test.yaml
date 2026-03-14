@@ -1,0 +1,6 @@
+# Test profile
+%test.quarkus:
+  log:
+    level: WARN
+%test.app:
+  env: test

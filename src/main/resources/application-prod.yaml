@@ -1,0 +1,11 @@
+# Production profile
+%prod.quarkus:
+  log:
+    level: INFO
+    category:
+      "org.techsolution": INFO
+  mongodb:
+    connection-string: ${MONGODB_URI:mongodb://localhost:27017}
+    database: aiwebhook
+%prod.app:
+  env: prod
