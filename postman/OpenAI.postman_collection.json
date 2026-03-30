@@ -1,0 +1,179 @@
+{
+  "info": {
+    "_postman_id": "2f3ceac4-0127-44e4-956d-dc242f99a62f",
+    "name": "OpenAI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "6993795",
+    "_collection_link": "https://go.postman.co/collection/6993795-2f3ceac4-0127-44e4-956d-dc242f99a62f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Call AI",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer $OPENAI_API_KEY"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"model\": \"gpt-5-mini\",\n    \"input\": \"beli kopi 30 ribu dari dompet\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.openai.com/v1/responses",
+          "protocol": "https",
+          "host": [
+            "api",
+            "openai",
+            "com"
+          ],
+          "path": [
+            "v1",
+            "responses"
+          ]
+        },
+        "description": "Generated from cURL: curl https://api.openai.com/v1/responses \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"model\": \"gpt-5-mini\",\n    \"input\": \"beli kopi 30 ribu dari dompet\"\n  }'"
+      },
+      "response": []
+    },
+    {
+      "name": "Call Assistant",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{API_TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "OpenAI-Beta",
+            "value": " assistants=v2",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"assistant_id\": \"asst_7lGE2dx6c73xlQmBVqeITvhl\",\r\n  \"thread\": {\r\n    \"messages\": [\r\n      {\r\n        \"role\": \"user\",\r\n        \"content\": \"beli kopi 30 ribu dari dompet\"\r\n      }\r\n    ]\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.openai.com/v1/threads/runs",
+          "protocol": "https",
+          "host": [
+            "api",
+            "openai",
+            "com"
+          ],
+          "path": [
+            "v1",
+            "threads",
+            "runs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Response API",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{API_TOKEN}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer $OPENAI_API_KEY"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"model\": \"gpt-5\",\n    \"input\": \"Beli nasi padang 25000\",\n    \"text\": {\n        \"format\": {\n            \"type\": \"json_schema\",\n            \"name\": \"financial_transaction\",\n            \"schema\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"type\": {\n                        \"type\": \"string\",\n                        \"enum\": [\n                            \"expense\",\n                            \"income\"\n                        ]\n                    },\n                    \"description\": {\n                        \"type\": \"string\"\n                    },\n                    \"amount\": {\n                        \"type\": \"number\"\n                    },\n                    \"currency\": {\n                        \"type\": \"string\"\n                    },\n                    \"category\": {\n                        \"type\": \"string\"\n                    },\n                    \"account\": {\n                        \"type\": [\"string\", \"null\"]\n                    }\n                },\n                \"required\": [\n                    \"type\",\n                    \"description\",\n                    \"amount\",\n                    \"currency\",\n                    \"category\",\n                    \"account\"\n                ],\n                \"additionalProperties\": false\n            }\n        }\n    }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.openai.com/v1/responses",
+          "protocol": "https",
+          "host": [
+            "api",
+            "openai",
+            "com"
+          ],
+          "path": [
+            "v1",
+            "responses"
+          ]
+        },
+        "description": "Generated from cURL: curl https://api.openai.com/v1/responses \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -d '{\n    \"model\": \"gpt-5.4\",\n    \"input\": \"Tell me a three sentence bedtime story about a unicorn.\"\n  }'\n"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "API_TOKEN",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

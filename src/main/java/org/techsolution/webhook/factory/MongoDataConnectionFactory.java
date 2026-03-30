@@ -1,4 +1,4 @@
-package org.techsolution.webhook.config;
+package org.techsolution.webhook.factory;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -9,7 +9,7 @@ import org.bson.Document;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
-public class MongoDataConnection {
+public class MongoDataConnectionFactory {
 
     @Inject
     MongoClient mongoClient;
