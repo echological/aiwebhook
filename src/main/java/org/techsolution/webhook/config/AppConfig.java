@@ -1,13 +1,9 @@
 package org.techsolution.webhook.config;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.Getter;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-/**
- * Centralized app config - inject di mana saja.
- */
 @ApplicationScoped
 @Getter
 public class AppConfig {
@@ -19,7 +15,22 @@ public class AppConfig {
     String appVersion;
 
     @ConfigProperty(name = "app.env", defaultValue = "dev")
-    String env;
+    private String env;
+
+    @ConfigProperty(name = "quarkus.mongodb.database")
+    private String mongoDatabase;
+
+    @ConfigProperty(name = "openai.api-key")
+    private String openaiApiKey;
+
+    @ConfigProperty(name = "openai.base-url", defaultValue = "https://api.openai.com/v1")
+    private String openaiBaseUrl;
+
+    @ConfigProperty(name = "telegram.bot.token")
+    private String telegramBotToken;
+
+    @ConfigProperty(name = "telegram.bot.base-url", defaultValue = "https://api.telegram.org")
+    private String telegramBotBaseUrl;
 
     public boolean isDev() {
         return "dev".equalsIgnoreCase(env);

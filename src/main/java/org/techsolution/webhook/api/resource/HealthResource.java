@@ -1,4 +1,4 @@
-package org.techsolution.webhook.api;
+package org.techsolution.webhook.api.resource;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;

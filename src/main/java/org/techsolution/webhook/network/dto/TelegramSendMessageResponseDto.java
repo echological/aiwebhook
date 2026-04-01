@@ -1,4 +1,4 @@
-package org.techsolution.webhook.data.dto;
+package org.techsolution.webhook.network.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,31 +7,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TelegramChatRecordDto {
+public class TelegramSendMessageResponseDto {
 
-    public static final String COLLECTION = "telegram_chat_records";
-
-    @JsonProperty("update_id")
-    private Long updateId;
-    private Message message;
-    @JsonProperty("created_at")
-    private LocalDateTime createdAt;
-    @JsonProperty("updated_at")
-    private LocalDateTime updatedAt;
+    private Boolean ok;
+    private Result result;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Message {
+    public static class Result {
         @JsonProperty("message_id")
         private Long messageId;
         private From from;
@@ -39,7 +30,6 @@ public class TelegramChatRecordDto {
         private Long date;
         private String text;
     }
-
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
@@ -51,13 +41,8 @@ public class TelegramChatRecordDto {
         private Boolean isBot;
         @JsonProperty("first_name")
         private String firstName;
-        @JsonProperty("last_name")
-        private String lastName;
         private String username;
-        @JsonProperty("language_code")
-        private String languageCode;
     }
-
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

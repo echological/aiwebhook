@@ -1,298 +1,257 @@
-# Quarkus Annotations Reference (Komprehensif)
+# Quarkus Annotations Reference (Lengkap Praktis)
 
-Dokumen ini adalah referensi komprehensif annotation yang umum dipakai di ekosistem Quarkus (core + extension populer).
-Catatan: daftar ini sangat luas, tapi tetap bukan 100% seluruh annotation dari semua extension pihak ketiga.
+Dokumen ini adalah referensi lengkap-praktis annotation yang umum dipakai saat membangun aplikasi Quarkus.  
+Catatan: ekosistem Quarkus sangat besar, jadi daftar ini fokus pada annotation inti + extension yang paling sering dipakai di production.
 
-## 1) CDI / Dependency Injection (jakarta.enterprise + jakarta.inject)
+## 1) CDI / Dependency Injection (Arc)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@Inject` | Inject dependency |
-| `@ApplicationScoped` | Bean singleton level aplikasi (umum untuk service/facade/adapter) |
-| `@Singleton` | Singleton scope |
-| `@Dependent` | Default scope CDI (instance mengikuti titik inject) |
-| `@RequestScoped` | Scope per request |
-| `@SessionScoped` | Scope per session |
-| `@Named` | Beri nama bean untuk disambiguasi |
-| `@Qualifier` | Membuat custom qualifier |
-| `@Produces` | Producer method/field CDI |
-| `@Disposes` | Dispose object dari producer |
-| `@Alternative` | Implementasi alternatif untuk injection |
-| `@Priority` | Prioritas interceptor/alternative |
-| `@PostConstruct` | Hook setelah bean diinisialisasi |
-| `@PreDestroy` | Hook sebelum bean dihancurkan |
-| `@Observes` | Observer event sinkron |
-| `@ObservesAsync` | Observer event asynchronous |
-| `@Startup` (Quarkus) | Paksa bean startup saat boot |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Inject` | `jakarta.inject` | Inject dependency ke field/constructor/method |
+| `@Named` | `jakarta.inject` | Bean name qualifier sederhana |
+| `@Qualifier` | `jakarta.inject` | Membuat custom qualifier |
+| `@Singleton` | `jakarta.inject` | Singleton bean |
+| `@ApplicationScoped` | `jakarta.enterprise.context` | Satu instance per aplikasi |
+| `@RequestScoped` | `jakarta.enterprise.context` | Satu instance per HTTP request |
+| `@SessionScoped` | `jakarta.enterprise.context` | Scope session |
+| `@Dependent` | `jakarta.enterprise.context` | Scope default CDI |
+| `@Produces` | `jakarta.enterprise.inject` | Producer method/field bean |
+| `@Disposes` | `jakarta.enterprise.inject` | Cleanup bean produced |
+| `@Alternative` | `jakarta.enterprise.inject` | Bean alternatif |
+| `@Priority` | `jakarta.annotation` | Prioritas interceptor/filter/alternative |
+| `@PostConstruct` | `jakarta.annotation` | Hook setelah bean dibuat |
+| `@PreDestroy` | `jakarta.annotation` | Hook sebelum bean dihancurkan |
+| `@Observes` | `jakarta.enterprise.event` | Observer CDI event |
+| `@ObservesAsync` | `jakarta.enterprise.event` | Observer async CDI event |
 
-## 2) REST API (jakarta.ws.rs)
+## 2) REST API (Jakarta REST, dipakai Quarkus REST)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@Path` | Mapping path class/method |
-| `@GET` `@POST` `@PUT` `@DELETE` `@PATCH` `@HEAD` `@OPTIONS` | HTTP method |
-| `@Produces` | Media type response |
-| `@Consumes` | Media type request |
-| `@PathParam` | Ambil path variable |
-| `@QueryParam` | Ambil query param |
-| `@HeaderParam` | Ambil header request |
-| `@CookieParam` | Ambil cookie |
-| `@FormParam` | Ambil form value |
-| `@BeanParam` | Gabung param object |
-| `@DefaultValue` | Nilai default parameter |
-| `@Context` | Akses context object JAX-RS |
-| `@Provider` | Daftarkan provider (`ExceptionMapper`, filter, dll) |
-| `@ApplicationPath` | Base path untuk aplikasi JAX-RS |
-| `@MatrixParam` | Ambil matrix parameter |
-| `@Encoded` | Disable URL decoding |
-| `@Suspended` | Async response (`AsyncResponse`) |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Path` | `jakarta.ws.rs` | Mendefinisikan path endpoint |
+| `@GET` / `@POST` / `@PUT` / `@DELETE` / `@PATCH` | `jakarta.ws.rs` | HTTP method mapping |
+| `@Consumes` | `jakarta.ws.rs` | Tipe body request |
+| `@Produces` | `jakarta.ws.rs` | Tipe response |
+| `@PathParam` | `jakarta.ws.rs` | Ambil variable path |
+| `@QueryParam` | `jakarta.ws.rs` | Ambil query param |
+| `@HeaderParam` | `jakarta.ws.rs` | Ambil header |
+| `@CookieParam` | `jakarta.ws.rs` | Ambil cookie |
+| `@MatrixParam` | `jakarta.ws.rs` | Ambil matrix param |
+| `@BeanParam` | `jakarta.ws.rs` | Gabung banyak param |
+| `@DefaultValue` | `jakarta.ws.rs` | Default value param |
+| `@FormParam` | `jakarta.ws.rs` | Ambil form field |
+| `@Context` | `jakarta.ws.rs.core` | Inject context JAX-RS |
+| `@Provider` | `jakarta.ws.rs.ext` | Registrasi provider |
+| `@NameBinding` | `jakarta.ws.rs` | Binding filter/interceptor custom |
+| `@RegisterRestClient` | `org.eclipse.microprofile.rest.client.inject` | Registrasi REST client interface |
+| `@RestClient` | `org.eclipse.microprofile.rest.client.inject` | Inject REST client |
 
-## 3) REST Client (MicroProfile Rest Client)
+## 3) Validation (Bean Validation)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@RegisterRestClient` | Registrasi interface sebagai REST client |
-| `@RestClient` | Inject REST client |
-| `@RegisterProvider` | Daftarkan provider per client |
-| `@ClientHeaderParam` | Tambah header statis/dinamis |
-| `@ClientExceptionMapper` (Quarkus) | Mapping error response client |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Valid` | `jakarta.validation` | Validasi object nested |
+| `@NotNull` | `jakarta.validation.constraints` | Tidak boleh null |
+| `@NotBlank` | `jakarta.validation.constraints` | String tidak boleh kosong/blank |
+| `@NotEmpty` | `jakarta.validation.constraints` | Koleksi/string tidak kosong |
+| `@Size` | `jakarta.validation.constraints` | Batas panjang/jumlah |
+| `@Min` / `@Max` | `jakarta.validation.constraints` | Batas angka |
+| `@Positive` / `@PositiveOrZero` | `jakarta.validation.constraints` | Angka positif |
+| `@Negative` / `@NegativeOrZero` | `jakarta.validation.constraints` | Angka negatif |
+| `@Pattern` | `jakarta.validation.constraints` | Regex validation |
+| `@Email` | `jakarta.validation.constraints` | Format email |
+| `@AssertTrue` / `@AssertFalse` | `jakarta.validation.constraints` | Validasi boolean |
 
-## 4) Konfigurasi (MicroProfile Config + SmallRye Config)
+## 4) Config (MicroProfile Config)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@ConfigProperty` | Inject config by key |
-| `@ConfigProperties` | Bind grup property ke class (legacy MP style) |
-| `@ConfigMapping` (SmallRye) | Bind strongly-typed interface dari prefix config |
-| `@WithName` | Override nama key di `@ConfigMapping` |
-| `@WithDefault` | Default value di `@ConfigMapping` |
-| `@WithParentName` | Gunakan nama parent key |
-| `@WithConverter` | Gunakan converter custom |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@ConfigProperty` | `org.eclipse.microprofile.config.inject` | Ambil config dari `application.*` |
+| `@ConfigMapping` | `io.smallrye.config` | Mapping config ke interface typed |
+| `@WithName` | `io.smallrye.config` | Alias nama property pada `@ConfigMapping` |
+| `@WithDefault` | `io.smallrye.config` | Default value typed config |
 
-## 5) Validasi (jakarta.validation)
+## 5) Transaction (Narayana/JTA)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@Valid` | Trigger validasi object nested |
-| `@NotNull` | Harus tidak null |
-| `@NotBlank` | String tidak boleh blank |
-| `@NotEmpty` | Collection/String tidak boleh kosong |
-| `@Size` | Batas panjang/ukuran |
-| `@Min` `@Max` | Batas numeric |
-| `@Positive` `@PositiveOrZero` | Numeric positif |
-| `@Negative` `@NegativeOrZero` | Numeric negatif |
-| `@Email` | Format email |
-| `@Pattern` | Regex |
-| `@Past` `@Future` | Validasi tanggal |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Transactional` | `jakarta.transaction` | Menjalankan method dalam transaksi |
+| `@TransactionScoped` | `jakarta.transaction` | Scope bean per transaksi |
 
-## 6) Transaksi
+## 6) Scheduling
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@Transactional` (jakarta.transaction) | Boundary transaksi pada method/class |
-| `@TransactionScoped` | Scope berbasis transaksi |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Scheduled` | `io.quarkus.scheduler` | Menjalankan job terjadwal |
+| `@Scheduled.ConcurrentExecution` | `io.quarkus.scheduler` | Atur perilaku concurrent |
+| `@Scheduled.SkipPredicate` | `io.quarkus.scheduler` | Skip job berdasarkan kondisi |
 
-## 7) Security
+## 7) Caching (Quarkus Cache)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@RolesAllowed` | Batasi akses berdasar role |
-| `@PermitAll` | Boleh untuk semua user |
-| `@DenyAll` | Tolak semua akses |
-| `@Authenticated` (Quarkus) | Wajib user authenticated |
-| `@PermissionsAllowed` (Quarkus) | Cek permission granular |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@CacheResult` | `io.quarkus.cache` | Cache hasil method |
+| `@CacheInvalidate` | `io.quarkus.cache` | Invalidate satu key |
+| `@CacheInvalidateAll` | `io.quarkus.cache` | Invalidate semua key |
+| `@CacheKey` | `io.quarkus.cache` | Tandai parameter sebagai key |
 
-## 8) OpenAPI / Swagger (MicroProfile OpenAPI)
+## 8) Fault Tolerance (MicroProfile FT)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@Tag` | Kelompok endpoint |
-| `@Operation` | Ringkasan endpoint |
-| `@APIResponse` / `@APIResponses` | Dokumentasi response |
-| `@RequestBody` | Dokumentasi request body |
-| `@Parameter` / `@Parameters` | Dokumentasi parameter |
-| `@Schema` | Dokumentasi schema model |
-| `@Content` | Konten response/request |
-| `@ExampleObject` | Contoh payload |
-| `@SecurityScheme` / `@SecuritySchemes` | Definisi skema security |
-| `@SecurityRequirement` / `@SecurityRequirements` | Security requirement endpoint |
-| `@Server` / `@Servers` | Definisi server |
-| `@OpenAPIDefinition` | Metadata global OpenAPI |
-| `@ExternalDocumentation` | Link dokumentasi eksternal |
-| `@Callback` / `@Callbacks` | OpenAPI callback |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Retry` | `org.eclipse.microprofile.faulttolerance` | Retry saat gagal |
+| `@Timeout` | `org.eclipse.microprofile.faulttolerance` | Batas waktu eksekusi |
+| `@CircuitBreaker` | `org.eclipse.microprofile.faulttolerance` | Membuka circuit saat sering gagal |
+| `@Bulkhead` | `org.eclipse.microprofile.faulttolerance` | Batasi concurrency |
+| `@Fallback` | `org.eclipse.microprofile.faulttolerance` | Method fallback |
+| `@Asynchronous` | `org.eclipse.microprofile.faulttolerance` | Eksekusi async |
 
-## 9) Fault Tolerance (MicroProfile FT)
+## 9) Security
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@Retry` | Retry otomatis saat gagal |
-| `@Timeout` | Timeout eksekusi |
-| `@Fallback` | Fallback handler |
-| `@CircuitBreaker` | Putuskan traffic saat error tinggi |
-| `@Bulkhead` | Batasi konkurensi |
-| `@Asynchronous` | Eksekusi async |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@RolesAllowed` | `jakarta.annotation.security` | Batasi endpoint untuk role tertentu |
+| `@PermitAll` | `jakarta.annotation.security` | Semua role boleh akses |
+| `@DenyAll` | `jakarta.annotation.security` | Tidak ada yang boleh akses |
+| `@Authenticated` | `io.quarkus.security` | Harus login/authenticated |
+| `@PermissionsAllowed` | `io.quarkus.security` | Kontrol akses berbasis permission |
 
-## 10) Scheduler (Quarkus Scheduler)
+## 10) OpenAPI / Swagger (SmallRye OpenAPI)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@Scheduled` | Menjalankan task terjadwal (cron/every) |
-| `@Scheduled.ConcurrentExecution` | Atur mode konkurensi scheduler |
-| `@Scheduled.SkipPredicate` | Kondisi skip run |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@OpenAPIDefinition` | `org.eclipse.microprofile.openapi.annotations` | Metadata global OpenAPI |
+| `@Info` | `org.eclipse.microprofile.openapi.annotations.info` | Informasi API |
+| `@Tag` | `org.eclipse.microprofile.openapi.annotations.tags` | Group endpoint |
+| `@Operation` | `org.eclipse.microprofile.openapi.annotations` | Ringkasan endpoint |
+| `@APIResponse` / `@APIResponses` | `org.eclipse.microprofile.openapi.annotations.responses` | Dokumentasi response |
+| `@Parameter` | `org.eclipse.microprofile.openapi.annotations.parameters` | Dokumentasi parameter |
+| `@RequestBody` | `org.eclipse.microprofile.openapi.annotations.parameters` | Dokumentasi body |
+| `@Schema` | `org.eclipse.microprofile.openapi.annotations.media` | Dokumentasi model schema |
+| `@SecurityScheme` / `@SecurityRequirement` | `org.eclipse.microprofile.openapi.annotations.security` | Dokumentasi security |
 
-## 11) Caching (Quarkus Cache)
+## 11) Health Check (SmallRye Health)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@CacheResult` | Cache hasil method |
-| `@CacheInvalidate` | Invalidasi cache key tertentu |
-| `@CacheInvalidateAll` | Invalidasi semua key cache |
-| `@CacheKey` | Tandai argumen sebagai key cache |
-| `@CacheName` | Nama cache |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Liveness` | `org.eclipse.microprofile.health` | Health check liveness |
+| `@Readiness` | `org.eclipse.microprofile.health` | Health check readiness |
+| `@Startup` | `org.eclipse.microprofile.health` | Health check startup |
 
-## 12) Reactive Messaging (SmallRye / MicroProfile)
+## 12) Metrics (Micrometer / MP Metrics)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@Incoming` | Consumer channel |
-| `@Outgoing` | Producer channel |
-| `@Channel` | Inject emitter/stream channel |
-| `@Broadcast` | Broadcast message ke banyak subscriber |
-| `@Acknowledgment` | Atur strategi ack |
-| `@Blocking` | Jalankan consumer di worker thread |
-| `@Merge` | Merge beberapa publisher |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Counted` | `org.eclipse.microprofile.metrics.annotation` | Hitung jumlah panggilan method |
+| `@Timed` | `org.eclipse.microprofile.metrics.annotation` | Ukur durasi method |
+| `@Gauge` | `org.eclipse.microprofile.metrics.annotation` | Nilai saat ini |
+| `@Metric` | `org.eclipse.microprofile.metrics.annotation` | Inject metric |
 
-## 13) JSON (Jackson)
+## 13) Reactive Messaging (SmallRye Messaging)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@JsonProperty` | Mapping nama field JSON |
-| `@JsonIgnoreProperties` | Abaikan properti tak dikenal |
-| `@JsonInclude` | Atur field yang diserialisasi |
-| `@JsonIgnore` | Abaikan field |
-| `@JsonFormat` | Format date/time |
-| `@JsonAlias` | Alias nama field input |
-| `@JsonCreator` | Constructor/factory deserializer |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Incoming` | `org.eclipse.microprofile.reactive.messaging` | Consumer channel |
+| `@Outgoing` | `org.eclipse.microprofile.reactive.messaging` | Producer channel |
+| `@Channel` | `org.eclipse.microprofile.reactive.messaging` | Inject channel |
+| `@Broadcast` | `io.smallrye.reactive.messaging.annotations` | Broadcast ke banyak subscriber |
+| `@Blocking` | `io.smallrye.reactive.messaging.annotations` | Jalankan di worker thread |
+| `@Acknowledgment` | `org.eclipse.microprofile.reactive.messaging` | Strategy ack message |
 
-## 14) Panache MongoDB (Quarkus)
+## 14) Panache ORM (Hibernate / Mongo)
 
-| Annotation / Base Class | Fungsi singkat |
-|---|---|
-| `@MongoEntity` | Tentukan collection/database/client |
-| `PanacheMongoEntity` | Entity aktif dengan `id` bawaan |
-| `PanacheMongoEntityBase` | Entity base tanpa `id` bawaan |
-| `PanacheMongoRepository<T>` | Repository pattern MongoDB |
-| `PanacheMongoRepositoryBase<T, ID>` | Repository dengan custom ID |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@PanacheEntity` | `io.quarkus.hibernate.orm.panache` | Entity aktif-record untuk ORM |
+| `@PanacheEntityBase` | `io.quarkus.hibernate.orm.panache` | Base entity tanpa id default |
+| `@MongoEntity` | `io.quarkus.mongodb.panache.common` | Mapping koleksi MongoDB |
+| `PanacheMongoEntity` | `io.quarkus.mongodb.panache` | Base class Mongo active-record |
+| `PanacheMongoEntityBase` | `io.quarkus.mongodb.panache` | Base Mongo tanpa id default |
 
-## 15) Panache JPA / Hibernate (jika pakai SQL)
+## 15) Jakarta Persistence (JPA, jika pakai SQL)
 
-| Annotation / Base Class | Fungsi singkat |
-|---|---|
-| `@Entity` | Tandai entity JPA |
-| `@Table` | Nama tabel |
-| `@Id` / `@GeneratedValue` | Primary key |
-| `@Column` | Mapping kolom |
-| `@OneToMany` `@ManyToOne` `@OneToOne` `@ManyToMany` | Relasi |
-| `PanacheEntity` / `PanacheEntityBase` | Active record style |
-| `PanacheRepository<T>` | Repository style |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@Entity` | `jakarta.persistence` | Menandai class entity |
+| `@Table` | `jakarta.persistence` | Nama tabel |
+| `@Id` | `jakarta.persistence` | Primary key |
+| `@GeneratedValue` | `jakarta.persistence` | Auto-generate id |
+| `@Column` | `jakarta.persistence` | Detail kolom |
+| `@OneToOne` / `@OneToMany` / `@ManyToOne` / `@ManyToMany` | `jakarta.persistence` | Relasi entity |
+| `@JoinColumn` | `jakarta.persistence` | FK column |
+| `@Enumerated` | `jakarta.persistence` | Mapping enum |
+| `@Lob` | `jakarta.persistence` | CLOB/BLOB |
+| `@Version` | `jakarta.persistence` | Optimistic locking |
 
-## 16) Quarkus Native / Reflection
+## 16) Test (Quarkus Testing)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@RegisterForReflection` | Daftarkan class agar tersedia untuk reflection di native image |
-| `@RegisterForProxy` | Daftarkan interface/class untuk proxy native |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@QuarkusTest` | `io.quarkus.test.junit` | Test dengan runtime Quarkus |
+| `@QuarkusIntegrationTest` | `io.quarkus.test.junit` | Test packaged artifact |
+| `@TestHTTPEndpoint` | `io.quarkus.test.common.http` | Base URL endpoint test |
+| `@TestHTTPResource` | `io.quarkus.test.common.http` | Inject URL endpoint test |
+| `@InjectMock` | `io.quarkus.test.junit.mockito` | Mock bean untuk test |
+| `@InjectSpy` | `io.quarkus.test.junit.mockito` | Spy bean untuk test |
+| `@TestProfile` | `io.quarkus.test.junit` | Pakai test profile custom |
 
-## 17) Testing (Quarkus Test)
+## 17) Native Image / Reflection
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@QuarkusTest` | Jalankan test dengan runtime Quarkus |
-| `@QuarkusIntegrationTest` | Jalankan test pada packaged app |
-| `@TestHTTPEndpoint` | Set endpoint dasar untuk REST-assured |
-| `@TestHTTPResource` | Inject URL endpoint test |
-| `@InjectMock` | Inject mock CDI bean |
-| `@InjectSpy` | Inject spy CDI bean |
-| `@QuarkusTestResource` | Register external test resource |
-| `@QuarkusMainTest` | Test mode `@QuarkusMain` |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@RegisterForReflection` | `io.quarkus.runtime.annotations` | Registrasi class untuk reflection |
+| `@RegisterForProxy` | `io.quarkus.runtime.annotations` | Registrasi interface proxy |
 
-## 18) Event Bus / Vert.x (opsional)
+## 18) JSON (Jackson, sering dipakai di Quarkus REST)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@ConsumeEvent` (Quarkus Vert.x) | Konsumsi event dari event bus |
+| Annotation | Paket | Fungsi |
+|---|---|---|
+| `@JsonProperty` | `com.fasterxml.jackson.annotation` | Mapping nama field JSON |
+| `@JsonIgnoreProperties` | `com.fasterxml.jackson.annotation` | Abaikan field tidak dikenal |
+| `@JsonInclude` | `com.fasterxml.jackson.annotation` | Atur field yang diserialisasi |
+| `@JsonIgnore` | `com.fasterxml.jackson.annotation` | Abaikan field/method |
+| `@JsonFormat` | `com.fasterxml.jackson.annotation` | Format tanggal/angka |
 
-## 19) GraphQL (opsional)
+## 19) Lombok (Bukan Quarkus, tapi umum dipakai)
 
-| Annotation | Fungsi singkat |
-|---|---|
-| `@GraphQLApi` | Tandai class API GraphQL |
-| `@Query` / `@Mutation` | Operasi query/mutation |
-| `@Name` | Ubah nama field/argumen GraphQL |
-| `@Description` | Deskripsi schema GraphQL |
-
-## 20) gRPC (opsional)
-
-| Annotation | Fungsi singkat |
-|---|---|
-| `@GrpcService` (Quarkus) | Daftarkan gRPC service implementation |
-| `@GrpcClient` (Quarkus) | Inject gRPC client |
-
-## 21) Qute Template (opsional)
-
-| Annotation | Fungsi singkat |
-|---|---|
-| `@CheckedTemplate` | Type-safe template binding |
-| `@Location` | Lokasi template |
-| `@TemplateData` | Expose class ke template |
-
-## 22) Lombok (Bukan Quarkus, tapi dipakai di project ini)
-
-| Annotation | Fungsi singkat |
+| Annotation | Fungsi |
 |---|---|
 | `@Getter` / `@Setter` | Generate accessor |
-| `@Data` | Getter/setter + equals/hashCode + toString |
+| `@Data` | Getter+Setter+equals/hashCode+toString |
 | `@Builder` | Builder pattern |
-| `@NoArgsConstructor` / `@AllArgsConstructor` / `@RequiredArgsConstructor` | Constructor generator |
-| `@EqualsAndHashCode` | Custom equals/hashCode |
-| `@ToString` | Custom toString |
+| `@NoArgsConstructor` / `@AllArgsConstructor` / `@RequiredArgsConstructor` | Generate constructor |
 | `@Value` | Immutable class |
 | `@Slf4j` | Logger otomatis |
 
-## Contoh Starter Paling Umum
+## Contoh Kombinasi Annotation (Recommended)
 
 ```java
-@Path("/api")
+@Path("/api/telegram")
+@ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "API")
-public class DemoResource {
+@Tag(name = "Telegram")
+public class TelegramResource {
 
     @Inject
-    DemoService service;
+    TelegramService service;
 
-    @GET
-    @Path("/hello")
-    @Operation(summary = "Hello endpoint")
-    public Response hello() {
+    @POST
+    @Operation(summary = "Receive Telegram webhook")
+    @RolesAllowed("webhook")
+    public Response receive(@Valid TelegramUpdateDto dto) {
+        service.process(dto);
         return Response.ok().build();
-    }
-}
-
-@ApplicationScoped
-class DemoService {
-    @Transactional
-    public void run() {
     }
 }
 ```
 
-## Rekomendasi Praktis
+## Praktik yang Disarankan
 
-- Gunakan `@ApplicationScoped` untuk service/facade/adapter stateless.
-- Gunakan `@Valid` + bean validation di boundary REST request.
-- Gunakan `@Transactional` hanya di service yang memang ubah state database.
-- Gunakan `@Tag` + `@Operation` + `@APIResponse` untuk dokumentasi API yang rapi.
-- Gunakan `@ConfigMapping` untuk config kompleks; `@ConfigProperty` untuk config sederhana.
-- Hindari over-annotation: tambah annotation hanya saat ada kebutuhan jelas.
+- Gunakan scope default service sebagai `@ApplicationScoped`.
+- Pakai `@Transactional` hanya di boundary write operation.
+- Tambahkan `@Valid` di request body DTO.
+- Gunakan `@Tag` dan `@Operation` agar Swagger selalu rapi.
+- Gunakan `@RegisterForReflection` hanya jika benar-benar dibutuhkan.
+- Untuk helper murni stateless, lebih baik class `final` + method `static` tanpa CDI annotation.
 

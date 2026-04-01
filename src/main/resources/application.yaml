@@ -1,5 +1,5 @@
 # AI Webhook - Application Config
-# Development cepat: hot reload, live coding, dev UI
+# Base config (shared all profiles)
 
 quarkus:
   http:
@@ -14,12 +14,6 @@ quarkus:
     path: /q/openapi
     ui:
       path: /q/swagger-ui
-  # MongoDB - Dev Services auto-start di dev mode (Docker required)
-  # Production: set connection-string di application-prod.yaml
-  mongodb:
-    database: aiwebhook
-
-# App config
 app:
   name: AI Webhook
   version: 1.0.0

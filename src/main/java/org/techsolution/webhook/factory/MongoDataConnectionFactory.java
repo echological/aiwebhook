@@ -6,7 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.bson.Document;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.techsolution.webhook.config.AppConfig;
 
 @ApplicationScoped
 public class MongoDataConnectionFactory {
@@ -14,11 +14,11 @@ public class MongoDataConnectionFactory {
     @Inject
     MongoClient mongoClient;
 
-    @ConfigProperty(name = "quarkus.mongodb.database")
-    String databaseName;
+    @Inject
+    AppConfig appConfig;
 
     public MongoDatabase database() {
-        return mongoClient.getDatabase(databaseName);
+        return mongoClient.getDatabase(appConfig.getMongoDatabase());
     }
 
     public MongoCollection<Document> collection(String name) {
