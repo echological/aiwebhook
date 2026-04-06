@@ -1,7 +1,11 @@
 # Development profile
 quarkus:
+  http:
+    port: 8081
+  dev-ui:
+    always-include: true
   log:
-    level: DEBUG
+    level: INFO
     category:
       "org.techsolution": DEBUG
       "io.quarkus": INFO
@@ -10,6 +14,8 @@ quarkus:
     database: ${MONGODB_DB_DEV:aiwebhook}
 
 app:
+  name: AI Webhook
+  version: 1.0.0
   env: dev
 
 openai:
@@ -18,6 +24,8 @@ openai:
 
 telegram:
   bot:
-    token: ${TELEGRAM_BOT_TOKEN:-}
+    token: ${TELEGRAM_BOT_TOKEN:7957539358:AAHec5jxQVahJIAKuEnPv6AdcxZ-lKepbSQ}
     base-url: ${TELEGRAM_BOT_BASE_URL:https://api.telegram.org}
     default-chat-id: ${TELEGRAM_DEFAULT_CHAT_ID:6432338413}
+  webhook:
+    api-key: asd123qwe

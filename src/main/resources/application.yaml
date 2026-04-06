@@ -2,14 +2,6 @@
 # Base config (shared all profiles)
 
 quarkus:
-  http:
-    port: 8080
-  dev-ui:
-    always-include: true
-  log:
-    level: INFO
-    category:
-      "org.techsolution": DEBUG
   smallrye-openapi:
     path: /q/openapi
     ui:
