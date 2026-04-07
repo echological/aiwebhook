@@ -35,6 +35,18 @@ public class AppConfig {
     @ConfigProperty(name = "telegram.webhook.api-key")
     private String telegramWebhookApiKey;
 
+    @ConfigProperty(name = "http-log.mongo.enabled", defaultValue = "true")
+    private boolean httpLogMongoEnabled;
+
+    @ConfigProperty(name = "http-log.mongo.collection", defaultValue = "http_request_response_logs")
+    private String httpLogMongoCollection;
+
+    @ConfigProperty(name = "error-log.mongo.enabled", defaultValue = "true")
+    private boolean errorLogMongoEnabled;
+
+    @ConfigProperty(name = "error-log.mongo.collection", defaultValue = "error_logs")
+    private String errorLogMongoCollection;
+
     public boolean isDev() {
         return "dev".equalsIgnoreCase(env);
     }

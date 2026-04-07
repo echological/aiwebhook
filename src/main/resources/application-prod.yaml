@@ -1,12 +1,34 @@
 # Production profile
 quarkus:
+  http:
+    port: 8081
+  dev-ui:
+    always-include: true
   log:
     level: INFO
+    file:
+      enable: true
+      path: logs/app-prod.log
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] (%t) %s%e%n"
     category:
-      "org.techsolution": INFO
+      "org.techsolution": DEBUG
+      "io.quarkus": INFO
   mongodb:
-    connection-string: ${MONGODB_URI}
-    database: ${MONGODB_DB:aiwebhook}
+    connection-string: ${MONGODB_URI_DEV:mongodb://localhost:27017}
+    database: ${MONGODB_DB_DEV:ai_webhook}
 
 app:
-  env: prod
+  name: AI Webhook
+  version: 1.0.0
+  env: dev
+
+openai:
+  api-key: ${OPENAI_API_KEY:-}
+  base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1/responses}
+
+telegram:
+  bot:
+    token: ${TELEGRAM_BOT_TOKEN:-}
+    base-url: ${TELEGRAM_BOT_BASE_URL:https://api.telegram.org}
+  webhook:
+    api-key: qcaMnj6RrnDXB0CxTVKznivd2_PEziGf_zQALTyN1ro

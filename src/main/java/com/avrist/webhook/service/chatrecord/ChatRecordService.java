@@ -21,7 +21,10 @@ public class ChatRecordService implements ServiceContract<TelegramChatRecordDto,
     @Override
     public EmptyResponse execute(TelegramChatRecordDto o) throws ServiceValidationException {
         telegramChatRecordAdapter.save(o);
-        telegramAdapter.sendMessage(Long.toString(o.getMessage().getFrom().getId()), "acknowledge");
+        telegramAdapter.sendMessage(
+                Long.toString(o.getMessage().getFrom().getId()),
+                String.format("message '%s' %s!", o.getMessage().getText(), "acknowledge")
+        );
         return new EmptyResponse();
     }
 }
