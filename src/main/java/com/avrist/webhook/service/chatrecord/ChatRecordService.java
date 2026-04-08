@@ -1,10 +1,8 @@
 package com.avrist.webhook.service.chatrecord;
 
-import com.avrist.webhook.api.exception.GlobalExceptionMapper;
 import com.avrist.webhook.config.AppConfig;
 import com.avrist.webhook.contract.ServiceContract;
 import com.avrist.webhook.data.adapter.TelegramChatRecordAdapter;
-import com.avrist.webhook.data.dto.TelegramChatRecordDto;
 import com.avrist.webhook.dto.EmptyResponse;
 import com.avrist.webhook.exception.ServiceValidationException;
 import com.avrist.webhook.network.adapter.TelegramAdapter;
