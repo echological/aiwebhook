@@ -1,12 +1,35 @@
-# AI Webhook - Application Config
-# Base config (shared all profiles)
-
+app:
+  name: AI Webhook
+  version: 1.0.0
+  env: sit
 quarkus:
   smallrye-openapi:
     path: /q/openapi
     ui:
       path: /q/swagger-ui
-app:
-  name: AI Webhook
-  version: 1.0.0
-  env: sit
+  http:
+    port: 8080
+  dev-ui:
+    always-include: true
+  log:
+    level: INFO
+    file:
+      enable: true
+      path: logs/app-dev.log
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] (%t) %s%e%n"
+    category:
+      "com.avrist": DEBUG
+      "io.quarkus": INFO
+  mongodb:
+    connection-string: ${MONGODB_URI}
+    database: ${MONGODB_DB}
+openai:
+  api-key: ${OPENAI_API_KEY}
+  base-url: ${OPENAI_BASE_URL}
+
+telegram:
+  bot:
+    token: ${TELEGRAM_BOT_TOKEN}
+    base-url: ${TELEGRAM_BOT_BASE_URLn}
+  webhook:
+    api-key: ${TELEGRAM_BOT_API_KEY}
