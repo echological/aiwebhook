@@ -1,7 +1,7 @@
 # Development profile
 quarkus:
   http:
-    port: 8081
+    port: 8080
   dev-ui:
     always-include: true
   log:
@@ -14,21 +14,21 @@ quarkus:
       "com.avrist": DEBUG
       "io.quarkus": INFO
   mongodb:
-    connection-string: ${MONGODB_URI_DEV:mongodb://localhost:27017}
-    database: ${MONGODB_DB_DEV:aiwebhook}
+    connection-string: ${MONGODB_URI}
+    database: ${MONGODB_DB}
 
 app:
   name: AI Webhook
   version: 1.0.0
-  env: dev
+  env: sit
 
 openai:
-  api-key: ${OPENAI_API_KEY:-}
+  api-key: ${OPENAI_API_KEY}
   base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1/responses}
 
 telegram:
   bot:
-    token: ${TELEGRAM_BOT_TOKEN:7957539358:AAHec5jxQVahJIAKuEnPv6AdcxZ-lKepbSQ}
+    token: ${TELEGRAM_BOT_TOKEN}
     base-url: ${TELEGRAM_BOT_BASE_URL:https://api.telegram.org}
   webhook:
-    api-key: asd123qwe
+    api-key: ${TELEGRAM_BOT_API_KEY}

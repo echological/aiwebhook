@@ -11,7 +11,7 @@ quarkus:
       path: logs/app-prod.log
       format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] (%t) %s%e%n"
     category:
-      "org.techsolution": DEBUG
+      "com.avrist": DEBUG
       "io.quarkus": INFO
   mongodb:
     connection-string: ${MONGODB_URI_DEV:mongodb://localhost:27017}

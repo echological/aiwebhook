@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TelegramChatRecordDto {
-
     public static final String COLLECTION = "telegram_chat_records";
 
     @JsonProperty("update_id")

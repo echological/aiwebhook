@@ -9,4 +9,4 @@ quarkus:
 app:
   name: AI Webhook
   version: 1.0.0
-  env: dev
+  env: sit
