@@ -9,6 +9,7 @@ public class OpenAiModel {
     public static final String GPT_5 = "gpt-5";
     public static final String GPT_5_MINI = "gpt-5-mini";
     public static final String GPT_5_NANO = "gpt-5-nano";
+    public static final String GPT_5_4_NANO = "gpt-5.4-nano-2026-03-17";
     // GPT-4.1 family
     public static final String GPT_4_1 = "gpt-4.1";
     public static final String GPT_4_1_MINI = "gpt-4.1-mini";

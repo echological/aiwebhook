@@ -15,7 +15,7 @@ quarkus:
     level: INFO
     file:
       enable: true
-      path: logs/app-dev.log
+      path: logs/app.log
       format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c] (%t) %s%e%n"
     category:
       "com.avrist": DEBUG
@@ -30,6 +30,6 @@ openai:
 telegram:
   bot:
     token: ${TELEGRAM_BOT_TOKEN}
-    base-url: ${TELEGRAM_BOT_BASE_URLn}
+    base-url: ${TELEGRAM_BOT_BASE_URL}
   webhook:
     api-key: ${TELEGRAM_BOT_API_KEY}

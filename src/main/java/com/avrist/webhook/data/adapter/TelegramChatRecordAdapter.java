@@ -12,6 +12,7 @@ import com.avrist.webhook.data.dto.TelegramChatRecordDto;
 import com.avrist.webhook.factory.MongoDataConnectionFactory;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @ApplicationScoped
 public class TelegramChatRecordAdapter {
@@ -25,6 +26,7 @@ public class TelegramChatRecordAdapter {
     public void save(TelegramChatRecordDto entity) {
         try {
             var o = entity;
+            o.setUuid(UUID.randomUUID().toString());
 
             if(ObjectUtils.isEmpty(o.getCreatedAt())){
                 o.setCreatedAt(LocalDateTime.now());

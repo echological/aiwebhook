@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class TelegramChatRecordDto {
     public static final String COLLECTION = "telegram_chat_records";
 
+    private String uuid;
     @JsonProperty("update_id")
     private Long updateId;
     private Message message;
