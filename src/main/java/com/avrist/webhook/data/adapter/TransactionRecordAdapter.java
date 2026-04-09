@@ -35,7 +35,7 @@ public class TransactionRecordAdapter {
             var doc = Document.parse(objectMapper.writeValueAsString(o));
             mongo.collection(TransactionRecordDto.COLLECTION).insertOne(doc);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialize telegram record", e);
+            throw new RuntimeException("Failed to serialize trx record", e);
         }
     }
 }
