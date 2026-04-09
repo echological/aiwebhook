@@ -1,0 +1,42 @@
+{
+  "info": {
+    "_postman_id": "53c8755d-7ac9-4af8-a78b-3b3ad4b75cd0",
+    "name": "AI Webhook",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "6993795",
+    "_collection_link": "https://go.postman.co/collection/6993795-53c8755d-7ac9-4af8-a78b-3b3ad4b75cd0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Local Webhook",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"update_id\": 434860069,\r\n    \"message\": {\r\n        \"message_id\": 125,\r\n        \"from\": {\r\n            \"id\": 6432338413,\r\n            \"is_bot\": false,\r\n            \"first_name\": \"Faisal\",\r\n            \"last_name\": \"Amir\",\r\n            \"username\": \"zafaisal21\",\r\n            \"language_code\": \"en\"\r\n        },\r\n        \"chat\": {\r\n            \"id\": 6432338413,\r\n            \"first_name\": \"Faisal\",\r\n            \"last_name\": \"Amir\",\r\n            \"username\": \"zafaisal21\",\r\n            \"type\": \"private\"\r\n        },\r\n        \"date\": 1775472951,\r\n        \"text\": \"botii\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8081/webhook",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8081",
+          "path": [
+            "webhook"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
