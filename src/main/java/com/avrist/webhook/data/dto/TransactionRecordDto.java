@@ -28,6 +28,9 @@ public class TransactionRecordDto {
     public String currency;
     public String category;
     public String account;
+    public String fromUsername;
+    public String chatText;
+    public String chatRecordUUID;
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")

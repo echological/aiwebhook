@@ -8,14 +8,11 @@ import com.avrist.webhook.data.adapter.TransactionRecordAdapter;
 import com.avrist.webhook.data.dto.TransactionRecordDto;
 import com.avrist.webhook.dto.EmptyResponse;
 import com.avrist.webhook.exception.ServiceValidationException;
-import com.avrist.webhook.factory.MongoDataConnectionFactory;
-import com.avrist.webhook.network.adapter.OpenAiAdapter;
+import com.avrist.webhook.network.adapter.OpenAIAdapter;
 import com.avrist.webhook.network.adapter.TelegramAdapter;
 import com.avrist.webhook.service.chatrecord.dto.ChatRecordRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.UriInfo;
 import org.jboss.logging.Logger;
 
 import java.time.LocalDateTime;
@@ -36,7 +33,7 @@ public class ChatRecordService
     private TelegramAdapter telegramAdapter;
 
     @Inject
-    private OpenAiAdapter openAiAdapter;
+    private OpenAIAdapter openAiAdapter;
 
     @Inject
     private ErrorLogAdapter errorLogAdapter;
@@ -51,33 +48,36 @@ public class ChatRecordService
             return new EmptyResponse();
         }
 
-        telegramChatRecordAdapter.save(o.getTelegramChatRecordDto());
+        var chatRecord = telegramChatRecordAdapter.save(o.getTelegramChatRecordDto());
 
         try {
             var trx = openAiAdapter.getFinancialTrx(o.getTelegramChatRecordDto().getMessage().getText());
             transactionRecordAdapter.save(TransactionRecordDto.builder()
-                    .error(trx.getError())
-                    .errorCause(trx.getErrorCause())
-                    .type(trx.getType())
-                    .description(trx.getDescription())
-                    .amount(trx.getAmount())
-                    .currency(trx.getCurrency())
-                    .category(trx.getCategory())
-                    .account(trx.getAccount())
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
+                            .error(trx.getError())
+                            .errorCause(trx.getErrorCause())
+                            .type(trx.getType())
+                            .description(trx.getDescription())
+                            .amount(trx.getAmount())
+                            .currency(trx.getCurrency())
+                            .category(trx.getCategory())
+                            .account(trx.getAccount())
+                            .fromUsername(o.getTelegramChatRecordDto().getMessage().getFrom().getUsername())
+                            .chatRecordUUID(chatRecord.getUuid())
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
                     .build());
 
             if(trx.getError()){
                 telegramAdapter.sendMessage(
                         Long.toString(o.getTelegramChatRecordDto().getMessage().getFrom().getId()),
-                        String.format("message '%s' %s!", o.getTelegramChatRecordDto().getMessage().getText(), "error"));
+                        String.format("message '%s' %s %s!", o.getTelegramChatRecordDto().getMessage().getText(), "error", trx.getErrorCause()));
+                LOG.error(String.format("Failed to get financial trx %s", trx.getErrorCause()));
                 return new EmptyResponse();
             }
         }catch (Exception e){
             telegramAdapter.sendMessage(
                     Long.toString(o.getTelegramChatRecordDto().getMessage().getFrom().getId()),
-                    String.format("message '%s' %s!", o.getTelegramChatRecordDto().getMessage().getText(), "error"));
+                    String.format("message '%s' %s %s!", o.getTelegramChatRecordDto().getMessage().getText(), "error", e.getMessage()));
             LOG.error("Failed to get financial trx", e);
             errorLogAdapter.logErrorToMongo(e, 500, "INTERNAL_ERROR");
             return new EmptyResponse();

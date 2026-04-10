@@ -23,7 +23,7 @@ public class TelegramChatRecordAdapter {
     @Inject
     private ObjectMapper objectMapper;
 
-    public void save(TelegramChatRecordDto entity) {
+    public TelegramChatRecordDto save(TelegramChatRecordDto entity) {
         try {
             var o = entity;
             o.setUuid(UUID.randomUUID().toString());
@@ -35,6 +35,7 @@ public class TelegramChatRecordAdapter {
 
             var doc = Document.parse(objectMapper.writeValueAsString(o));
             mongo.collection(TelegramChatRecordDto.COLLECTION).insertOne(doc);
+            return o;
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize telegram record", e);
         }

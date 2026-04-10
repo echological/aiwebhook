@@ -11,7 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class OpenAiAdapter {
+public class OpenAIAdapter {
 
     @Inject
     private AppConfig appConfig;
