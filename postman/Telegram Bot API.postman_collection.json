@@ -72,7 +72,7 @@
               "key": "url",
               "description": "Required. HTTPS URL to send updates to. Use an empty string to remove webhook integration",
               "type": "text",
-              "value": "https://spiflicated-semidetached-molly.ngrok-free.dev/webhook/telegram/dev-bot"
+              "value": "https://spiflicated-semidetached-molly.ngrok-free.dev/webhook"
             },
             {
               "key": "certificate",
@@ -109,8 +109,7 @@
               "key": "secret_token",
               "description": "Optional. A secret token to be sent in a header “X-Telegram-Bot-Api-Secret-Token” in every webhook request, 1-256 characters. Only characters A-Z, a-z, 0-9, _ and - are allowed. The header is useful to ensure that the request comes from a webhook set by you.",
               "type": "text",
-              "value": "popcoinbotv1",
-              "disabled": true
+              "value": "sk-8f3a92c1b7d44a6bb5f1e2c9d0a7f123"
             }
           ]
         },
