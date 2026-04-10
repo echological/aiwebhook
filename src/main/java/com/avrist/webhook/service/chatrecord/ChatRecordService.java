@@ -62,6 +62,7 @@ public class ChatRecordService
                             .category(trx.getCategory())
                             .account(trx.getAccount())
                             .fromUsername(o.getTelegramChatRecordDto().getMessage().getFrom().getUsername())
+                            .chatText(o.getTelegramChatRecordDto().getMessage().getText())
                             .chatRecordUUID(chatRecord.getUuid())
                             .createdAt(LocalDateTime.now())
                             .updatedAt(LocalDateTime.now())
