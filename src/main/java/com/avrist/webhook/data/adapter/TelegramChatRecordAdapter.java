@@ -50,7 +50,7 @@ public class TelegramChatRecordAdapter {
             }
             o.setUpdatedAt(LocalDateTime.now());
 
-            var doc = Document.parse(objectMapper.writeValueAsString(0));
+            var doc = Document.parse(objectMapper.writeValueAsString(o));
             mongo.collection(TelegramChatRecordDto.COLLECTION).replaceOne(
                     Filters.eq("update_id", o.getUpdateId()),
                     doc,

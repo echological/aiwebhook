@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo
+set -euo pipefail
 
 IMAGE_NAME="tel-webhook:latest"
 CONTAINER_NAME="tel-webhook_sit"

@@ -3,6 +3,7 @@ package com.avrist.webhook.network.adapter;
 
 import com.avrist.webhook.config.AppConfig;
 import com.avrist.webhook.constant.OpenAiModel;
+import com.avrist.webhook.data.adapter.ConfigAdapter;
 import com.avrist.webhook.etc.FinancialTrxSchema;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.ChatModel;
@@ -16,7 +17,10 @@ public class OpenAIAdapter {
     @Inject
     private AppConfig appConfig;
 
-    private static final String INSTRUCTION = """
+    @Inject
+    private ConfigAdapter configAdapter;
+
+    private static final String DEFAULT_INSTRUCTION = """
             Tugasmu mengekstrak data transaksi keuangan dari input user.
             Jika input BUKAN transaksi keuangan (tidak ada intent pemasukan/pengeluaran atau nominal transaksi),
             set error=true dan isi error_cause.
@@ -32,7 +36,7 @@ public class OpenAIAdapter {
 
         var params = ResponseCreateParams.builder()
                 .model(ChatModel.of(OpenAiModel.GPT_5_4_NANO))
-                .instructions(INSTRUCTION)
+                .instructions(configAdapter.load("financial_trx_instruction", DEFAULT_INSTRUCTION))
                 .input(input)
                 .text(FinancialTrxSchema.class)
                 .build();
