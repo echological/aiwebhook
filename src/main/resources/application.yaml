@@ -25,11 +25,11 @@ quarkus:
     database: ${MONGODB_DB}
 openai:
   api-key: ${OPENAI_API_KEY}
-  base-url: ${OPENAI_BASE_URL}
-
 telegram:
   bot:
     token: ${TELEGRAM_BOT_TOKEN}
     base-url: ${TELEGRAM_BOT_BASE_URL}
   webhook:
     api-key: ${TELEGRAM_BOT_API_KEY}
+tesseract:
+  data-path: ${TESSERACT_DATA_PATH}

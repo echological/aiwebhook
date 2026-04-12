@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -38,6 +39,28 @@ public class TelegramChatRecordDto {
         private Chat chat;
         private Long date;
         private String text;
+        private String caption;
+        private List<PhotoSize> photo;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class PhotoSize {
+
+        @JsonProperty("file_id")
+        private String fileId;
+
+        @JsonProperty("file_unique_id")
+        private String fileUniqueId;
+
+        @JsonProperty("file_size")
+        private Long fileSize;
+
+        private Integer width;
+        private Integer height;
     }
 
     @Data

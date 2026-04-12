@@ -23,9 +23,6 @@ public class AppConfig {
     @ConfigProperty(name = "openai.api-key")
     private String openaiApiKey;
 
-    @ConfigProperty(name = "openai.base-url", defaultValue = "https://api.openai.com/v1")
-    private String openaiBaseUrl;
-
     @ConfigProperty(name = "telegram.bot.token")
     private String telegramBotToken;
 
@@ -46,6 +43,9 @@ public class AppConfig {
 
     @ConfigProperty(name = "error-log.mongo.collection", defaultValue = "error_logs")
     private String errorLogMongoCollection;
+
+    @ConfigProperty(name = "tesseract.data-path")
+    private String tessData;
 
     public boolean isDev() {
         return "dev".equalsIgnoreCase(env);
