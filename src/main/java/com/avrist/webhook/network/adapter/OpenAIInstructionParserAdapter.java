@@ -12,7 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class OpenAIAdapter {
+public class OpenAIInstructionParserAdapter {
 
     @Inject
     private AppConfig appConfig;
@@ -36,7 +36,7 @@ public class OpenAIAdapter {
 
         var params = ResponseCreateParams.builder()
                 .model(ChatModel.of(OpenAiModel.GPT_5_4_NANO))
-                .instructions(configAdapter.load("financial_trx_instruction", DEFAULT_INSTRUCTION))
+                .instructions(configAdapter.load("type_parser_instruction", DEFAULT_INSTRUCTION))
                 .input(input)
                 .text(FinancialTrxSchema.class)
                 .build();

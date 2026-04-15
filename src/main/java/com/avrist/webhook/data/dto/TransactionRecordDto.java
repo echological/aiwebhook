@@ -30,7 +30,10 @@ public class TransactionRecordDto {
     public String account;
     public String fromUsername;
     public String chatText;
+    public String ocrResult;
+    public String caption;
     public String chatRecordUUID;
+    public LocalDateTime trxDate;
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")

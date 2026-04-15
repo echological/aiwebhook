@@ -1,21 +1,18 @@
 package com.avrist.webhook.service.chatrecord;
 
 import com.avrist.webhook.config.AppConfig;
+import com.avrist.webhook.constant.WebhookAction;
 import com.avrist.webhook.contract.ServiceContract;
-import com.avrist.webhook.data.adapter.ErrorLogAdapter;
 import com.avrist.webhook.data.adapter.TelegramChatRecordAdapter;
-import com.avrist.webhook.data.adapter.TransactionRecordAdapter;
-import com.avrist.webhook.data.dto.TransactionRecordDto;
 import com.avrist.webhook.dto.EmptyResponse;
 import com.avrist.webhook.exception.ServiceValidationException;
-import com.avrist.webhook.network.adapter.OpenAIAdapter;
-import com.avrist.webhook.network.adapter.TelegramAdapter;
 import com.avrist.webhook.service.chatrecord.dto.ChatRecordRequest;
+import com.avrist.webhook.helper.TelegramHelper;
+import com.avrist.webhook.service.chatrecord.facade.RecordTrxFacade;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jboss.logging.Logger;
-
-import java.time.LocalDateTime;
 
 @ApplicationScoped
 public class ChatRecordService
@@ -27,22 +24,21 @@ public class ChatRecordService
     private TelegramChatRecordAdapter telegramChatRecordAdapter;
 
     @Inject
-    private TransactionRecordAdapter transactionRecordAdapter;
-
-    @Inject
-    private TelegramAdapter telegramAdapter;
-
-    @Inject
-    private OpenAIAdapter openAiAdapter;
-
-    @Inject
-    private ErrorLogAdapter errorLogAdapter;
-
-    @Inject
     private AppConfig appConfig;
+
+    @Inject
+    private RecordTrxFacade recordTrxFacade;
+
+    @Inject
+    private TelegramHelper telegramHelper;
 
     @Override
     public EmptyResponse execute(ChatRecordRequest o) throws ServiceValidationException {
+        if(ObjectUtils.isEmpty(o.getTelegramApiKey())){
+            LOG.error("Telegram API Key is empty");
+            return new EmptyResponse();
+        }
+
         if(!o.getTelegramApiKey().equalsIgnoreCase(appConfig.getTelegramWebhookApiKey())){
             LOG.error("Telegram API Key mismatch");
             return new EmptyResponse();
@@ -50,44 +46,23 @@ public class ChatRecordService
 
         var chatRecord = telegramChatRecordAdapter.save(o.getTelegramChatRecordDto());
 
-        try {
-            var trx = openAiAdapter.getFinancialTrx(o.getTelegramChatRecordDto().getMessage().getText());
-            transactionRecordAdapter.save(TransactionRecordDto.builder()
-                            .error(trx.getError())
-                            .errorCause(trx.getErrorCause())
-                            .type(trx.getType())
-                            .description(trx.getDescription())
-                            .amount(trx.getAmount())
-                            .currency(trx.getCurrency())
-                            .category(trx.getCategory())
-                            .account(trx.getAccount())
-                            .fromUsername(o.getTelegramChatRecordDto().getMessage().getFrom().getUsername())
-                            .chatText(o.getTelegramChatRecordDto().getMessage().getText())
-                            .chatRecordUUID(chatRecord.getUuid())
-                            .createdAt(LocalDateTime.now())
-                            .updatedAt(LocalDateTime.now())
-                    .build());
+        String ocrResult = null;
+        String caption = null;
 
-            if(trx.getError()){
-                telegramAdapter.sendMessage(
-                        Long.toString(o.getTelegramChatRecordDto().getMessage().getFrom().getId()),
-                        String.format("message '%s' %s %s!", o.getTelegramChatRecordDto().getMessage().getText(), "error", trx.getErrorCause()));
-                LOG.error(String.format("Failed to get financial trx %s", trx.getErrorCause()));
-                return new EmptyResponse();
-            }
+        try {
+            var image = telegramHelper.readImageAndCaption(chatRecord);
+            ocrResult = image.getOcrResult();
+            caption = image.getCaption();
         }catch (Exception e){
-            telegramAdapter.sendMessage(
-                    Long.toString(o.getTelegramChatRecordDto().getMessage().getFrom().getId()),
-                    String.format("message '%s' %s %s!", o.getTelegramChatRecordDto().getMessage().getText(), "error", e.getMessage()));
-            LOG.error("Failed to get financial trx", e);
-            errorLogAdapter.logErrorToMongo(e, 500, "INTERNAL_ERROR");
-            return new EmptyResponse();
+            LOG.error("Error reading image", e);
         }
 
-
-        telegramAdapter.sendMessage(
-                Long.toString(o.getTelegramChatRecordDto().getMessage().getFrom().getId()),
-                String.format("message '%s' %s!", o.getTelegramChatRecordDto().getMessage().getText(), "acknowledge"));
+        recordTrxFacade.recordTransaction(
+                chatRecord,
+                WebhookAction.RECORD_TRX,
+                ocrResult,
+                caption
+        );
         return new EmptyResponse();
     }
 }
