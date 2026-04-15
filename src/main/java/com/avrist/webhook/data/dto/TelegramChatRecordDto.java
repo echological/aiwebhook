@@ -1,11 +1,13 @@
 package com.avrist.webhook.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +20,9 @@ import java.util.List;
 public class TelegramChatRecordDto {
     public static final String COLLECTION = "telegram_chat_records";
 
-    private String uuid;
+    @JsonProperty("_id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private ObjectId id;
     @JsonProperty("update_id")
     private Long updateId;
     private Message message;
@@ -26,6 +30,8 @@ public class TelegramChatRecordDto {
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
+    @JsonProperty("app_version")
+    private String appVersion;
 
     @Data
     @NoArgsConstructor

@@ -3,7 +3,7 @@ package com.avrist.webhook.helper;
 import com.avrist.webhook.config.AppConfig;
 import com.avrist.webhook.data.dto.TelegramChatRecordDto;
 import com.avrist.webhook.network.adapter.TelegramAdapter;
-import com.avrist.webhook.service.chatrecord.dto.CallbackFileDto;
+import com.avrist.webhook.service.pawebhook.dto.CallbackFileDto;
 import com.avrist.webhook.util.TesseractUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

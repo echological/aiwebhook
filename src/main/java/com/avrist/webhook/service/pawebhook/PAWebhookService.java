@@ -1,4 +1,4 @@
-package com.avrist.webhook.service.chatrecord;
+package com.avrist.webhook.service.pawebhook;
 
 import com.avrist.webhook.config.AppConfig;
 import com.avrist.webhook.constant.WebhookAction;
@@ -6,19 +6,19 @@ import com.avrist.webhook.contract.ServiceContract;
 import com.avrist.webhook.data.adapter.TelegramChatRecordAdapter;
 import com.avrist.webhook.dto.EmptyResponse;
 import com.avrist.webhook.exception.ServiceValidationException;
-import com.avrist.webhook.service.chatrecord.dto.ChatRecordRequest;
+import com.avrist.webhook.service.pawebhook.dto.ChatRecordRequest;
 import com.avrist.webhook.helper.TelegramHelper;
-import com.avrist.webhook.service.chatrecord.facade.RecordTrxFacade;
+import com.avrist.webhook.service.pawebhook.facade.RecordTrxFacade;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jboss.logging.Logger;
 
 @ApplicationScoped
-public class ChatRecordService
+public class PAWebhookService
         implements ServiceContract<ChatRecordRequest, EmptyResponse> {
 
-    private static final Logger LOG = Logger.getLogger(ChatRecordService.class);
+    private static final Logger LOG = Logger.getLogger(PAWebhookService.class);
 
     @Inject
     private TelegramChatRecordAdapter telegramChatRecordAdapter;

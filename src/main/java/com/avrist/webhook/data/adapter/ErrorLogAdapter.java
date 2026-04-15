@@ -2,7 +2,6 @@ package com.avrist.webhook.data.adapter;
 
 import com.avrist.webhook.config.AppConfig;
 import com.avrist.webhook.factory.MongoDataConnectionFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Context;
