@@ -1,11 +1,13 @@
 package com.avrist.webhook.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +20,9 @@ public class TransactionRecordDto {
 
     public static final String COLLECTION = "trx_records";
 
-    public String uuid;
+    @JsonProperty("_id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private ObjectId id;
     public Boolean error;
     @JsonProperty("error_cause")
     public String errorCause;
@@ -32,12 +36,14 @@ public class TransactionRecordDto {
     public String chatText;
     public String ocrResult;
     public String caption;
-    public String chatRecordUUID;
+    @JsonProperty("telegram_chat_records_id")
+    private ObjectId chatRecordId;
     public LocalDateTime trxDate;
     @JsonProperty("created_at")
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
-
+    @JsonProperty("app_version")
+    private String appVersion;
 }
 

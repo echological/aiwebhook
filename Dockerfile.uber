@@ -1,0 +1,16 @@
+FROM eclipse-temurin:25-jre
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    tesseract-ocr-ind \
+    && rm -rf /var/lib/apt/lists/*
+
+
+ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata
+
+COPY target/*-runner.jar app.jar
+
+EXPOSE 8080
+ENTRYPOINT ["java","-Dquarkus.http.host=0.0.0.0","-jar","/app/app.jar"]

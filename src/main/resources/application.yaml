@@ -1,6 +1,6 @@
 app:
   name: AI Webhook
-  version: 1.0.0
+  version: ${app_version:0.0.1-SNAPSHOT}
   env: sit
 quarkus:
   smallrye-openapi:

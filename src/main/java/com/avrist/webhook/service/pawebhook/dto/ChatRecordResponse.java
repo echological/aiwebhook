@@ -1,4 +1,4 @@
-package com.avrist.webhook.service.chatrecord.dto;
+package com.avrist.webhook.service.pawebhook.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

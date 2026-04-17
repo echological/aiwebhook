@@ -1,4 +1,4 @@
-package com.avrist.webhook.service.chatrecord.facade;
+package com.avrist.webhook.service.pawebhook.facade;
 
 import com.avrist.webhook.constant.WebhookAction;
 import com.avrist.webhook.data.adapter.ErrorLogAdapter;
@@ -63,7 +63,7 @@ public class RecordTrxFacade {
                                 .account(trx.getAccount())
                                 .fromUsername(chatRecord.getMessage().getFrom().getUsername())
                                 .chatText(chatRecord.getMessage().getText())
-                                .chatRecordUUID(chatRecord.getUuid())
+                                .chatRecordId(chatRecord.getId())
                                 .ocrResult(ocrResult)
                                 .caption(caption)
                                 .trxDate(trx.getTrxDate())

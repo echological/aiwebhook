@@ -2,8 +2,8 @@ package com.avrist.webhook.api.resource;
 
 import com.avrist.webhook.data.dto.TelegramChatRecordDto;
 import com.avrist.webhook.dto.ApiResponse;
-import com.avrist.webhook.service.chatrecord.ChatRecordService;
-import com.avrist.webhook.service.chatrecord.dto.ChatRecordRequest;
+import com.avrist.webhook.service.pawebhook.PAWebhookService;
+import com.avrist.webhook.service.pawebhook.dto.ChatRecordRequest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -18,15 +18,15 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 public class WebhookResource {
 
     @Inject
-    private ChatRecordService chatRecordService;
+    private PAWebhookService PAWebhookService;
 
     @POST
-    @Path("")
-    @Operation(summary = "Devbot Webhook Entry")
+    @Path("pa")
+    @Operation(summary = "Devbot PA Webhook Entry")
     public Response telegramDevBotWebhook(
             TelegramChatRecordDto body,
             @HeaderParam("X-Telegram-Bot-Api-Secret-Token") String telegramApiKey) {
-        chatRecordService.execute(ChatRecordRequest.builder()
+        PAWebhookService.execute(ChatRecordRequest.builder()
                         .telegramApiKey(telegramApiKey)
                         .telegramChatRecordDto(body)
                 .build());

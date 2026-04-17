@@ -1,4 +1,4 @@
-package com.avrist.webhook.service.chatrecord.dto;
+package com.avrist.webhook.service.pawebhook.dto;
 
 import com.avrist.webhook.data.dto.TelegramChatRecordDto;
 import lombok.AllArgsConstructor;

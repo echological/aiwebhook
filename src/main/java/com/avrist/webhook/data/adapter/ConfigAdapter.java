@@ -27,6 +27,9 @@ public class ConfigAdapter {
     private MongoDataConnectionFactory mongo;
 
     @Inject
+    private AppConfig appConfig;
+
+    @Inject
     private ObjectMapper objectMapper;
 
     public String load(String key, String defaultValue) {
@@ -37,11 +40,11 @@ public class ConfigAdapter {
 
             if (doc == null) {
                 var configDto = ConfigDto.builder()
-                        .uuid(UUID.randomUUID().toString())
                         .key(key)
                         .value(defaultValue)
                         .updatedAt(LocalDateTime.now())
                         .createdAt(LocalDateTime.now())
+                        .appVersion(appConfig.getAppVersion())
                         .build();
 
                 doc = Document.parse(objectMapper.writeValueAsString(configDto));
