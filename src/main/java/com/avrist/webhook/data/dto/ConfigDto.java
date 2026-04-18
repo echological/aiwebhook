@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +22,7 @@ public class ConfigDto {
 
     @JsonProperty("_id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String id;
+    private ObjectId id;
     private String key;
     private String value;
     @JsonProperty("created_at")

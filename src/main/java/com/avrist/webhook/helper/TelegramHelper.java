@@ -23,6 +23,10 @@ public class TelegramHelper {
     private AppConfig appConfig;
 
     public CallbackFileDto readImageAndCaption(TelegramChatRecordDto chatRecord) throws IOException {
+        if(ObjectUtils.isEmpty(chatRecord.getMessage().getPhoto())){
+            return new CallbackFileDto();
+        }
+
         var biggestPhoto = chatRecord.getMessage().getPhoto().stream()
                 .max(java.util.Comparator.comparingLong(photo ->
                         (long) photo.getWidth() * photo.getHeight()));
